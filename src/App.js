@@ -8,10 +8,7 @@ import { Route, Link } from 'react-router-dom'
 class BooksApp extends React.Component {
 	state = {
 		allBooks: [],
-		booksSearch: [],
-		booksCurrent: [],
-		booksWant: [],
-		booksRead: []
+		booksSearch: []
 	}
 
 	// once main component mounts, call BooksAPI to get data
@@ -22,8 +19,6 @@ class BooksApp extends React.Component {
 				this.setState(() => ({
 					allBooks
 				}))
-				//sort books based by bookshelf
-				this.sortBooks();
 			})
 	}
 
@@ -43,44 +38,8 @@ class BooksApp extends React.Component {
 						this.setState(() => ({
 							allBooks
 						}))
-						//sort books based by bookshelf
-						this.sortBooks()
 					})
 			})
-	}
-
-	//functions add a book to bookshelf in the state
-	editCurrent(book) {
-		this.setState(() => ({
-			booksCurrent: this.state.booksCurrent.concat(book)
-		}))
-	}
-
-	editWant(book) {
-		this.setState(() => ({
-			booksWant: this.state.booksWant.concat(book)
-		}))
-	}
-
-	editRead(book) {
-		this.setState(() => ({
-			booksRead: this.state.booksRead.concat(book)
-		}))
-	}
-
-	//iterates through allBooks array then calls function based on bookshelf 
-	sortBooks = () => {
-		for (var i = 0; i < this.state.allBooks.length; i++) {
-			if (this.state.allBooks[i].shelf === "currentlyReading") {
-				this.editCurrent(this.state.allBooks[i])
-			}
-			else if (this.state.allBooks[i].shelf === "wantToRead") {
-				this.editWant(this.state.allBooks[i])
-			}
-			else {
-				this.editRead(this.state.allBooks[i])
-			}
-		}
 	}
 
 	//called when user exits search and navigates back to home. clears search results 
@@ -126,9 +85,9 @@ class BooksApp extends React.Component {
 						</div>
 						<div className="list-books-content">
 							<div>
-								<Bookshelf title="Currently Reading" moveBook={this.onShelfChange} allBooks={this.state.allBooks} books={this.state.booksCurrent} />
-								<Bookshelf title="Want to Read" moveBook={this.onShelfChange} allBooks={this.state.allBooks} books={this.state.booksWant} />
-								<Bookshelf title="Read" moveBook={this.onShelfChange} allBooks={this.state.allBooks} books={this.state.booksRead} />
+								<Bookshelf title="Currently Reading" moveBook={this.onShelfChange} allBooks={this.state.allBooks.filter(book => book.shelf === "currentlyReading")} />
+								<Bookshelf title="Want to Read" moveBook={this.onShelfChange} allBooks={this.state.allBooks.filter(book => book.shelf === "wantToRead")} />
+								<Bookshelf title="Read" moveBook={this.onShelfChange} allBooks={this.state.allBooks.filter(book => book.shelf === "read")}  />
 							</div>
 						</div>
 						<div className="open-search">

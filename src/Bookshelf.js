@@ -19,27 +19,15 @@ class Bookshelf extends Component {
 		}
 	}
 
-	//handles book shelves. if undefined, set shelf to 'none'
-	shelfHandler = (shelf) => {
-		var final = "";
-		if (typeof(shelf) === 'undefined') {
-			final = "none";
-			return final;
-		} else {
-			final = shelf;
-			return final;
-		}
-	}
-
 	render() {
 		return (
 			<div className="bookshelf">
 				<h2 className="bookshelf-title">{this.props.title}</h2>
 				<div className="bookshelf-books">
 					<ol className="books-grid">
-						{this.props.books.map((book) => (
+						{this.props.allBooks.map((book) => (
 							<li key={book.id}>
-								<Book title={book.title} authors={book.authors} id={book.id} imageLink={this.imageHandler(book.imageLinks)} optionState={this.shelfHandler(book.shelf)} moveBook={this.moveBook} />
+								<Book title={book.title} authors={book.authors} id={book.id} imageLink={this.imageHandler(book.imageLinks)} optionState={book.shelf ? book.shelf: 'none'} moveBook={this.moveBook} />
 							</li>
 						))}
 					</ol>
